@@ -1,9 +1,20 @@
 terraform {
   cloud {
-    organization = "Evironments"
+    organization = "AWS_Training"
 
     workspaces {
-      name = "qa"
+      name = "Production"
+      prefix = "prod-"
+    }
+
+    workspaces {
+      name = "Develop"
+      prefix = "dev-"
+    }
+
+    workspaces {
+      name = "Stage"
+      prefix = "stage-"
     }
   }
 }
