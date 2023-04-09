@@ -19,18 +19,14 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Init
-        run: terraform init -backend-config=backend-stage.hcl
+        run: terraform init -backend-config=stage.remote.tfbackend
 
 
       - name: Terraform Plan
         id: plan
-        run: |
-          terraform workspace select Stage
-          terraform plan -out=tfplan
-        continue-on-error: true
+        run: terraform plan -input=false
+        
 
       - name: Terraform Apply
         if: ${{ github.ref == 'refs/heads/stage' && github.event_name == 'push' }}
-        run: |
-          terraform workspace select Stage
-          terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve 
