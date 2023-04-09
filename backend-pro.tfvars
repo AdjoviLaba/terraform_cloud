@@ -1,4 +1,4 @@
 workspace = "Production"
-bucket    = "my-terraform-bucket-pro"
+bucket    = "terraform-bucket-prod"
 region    = "us-east-1"
 
