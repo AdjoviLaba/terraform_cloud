@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "environment" {
   description = "The environment name to use in resource names."
   type        = string
-  default     = "dev"
+  default     = "dev1"
 }
 
 variable "vpc_cidr_block" {
