@@ -42,9 +42,10 @@ resource "aws_subnet" "primary" {
 }
 
 resource "aws_subnet" "secondary" {
+  count = length(var.private_subnet_cidr_blocks)
   vpc_id     = aws_vpc.main.id
   availability_zone = data.aws_availability_zones.available.names[1]
-  cidr_block = slice(var.public_subnet_cidr_blocks, 0, var.public_subnet_count)# Specify the CIDR block for the primary subnet
+  cidr_block = slice(var.public_subnet_cidr_blocks[count.index], 0, var.public_subnet_count)# Specify the CIDR block for the primary subnet
   tags = {
     Name = "${var.environment}-public-subnet"
   }
