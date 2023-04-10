@@ -17,10 +17,10 @@ provider "aws" {
 }
 
 resource "aws_vpc" "main" {
-    cidr_block = "10.0.0.0/16"
+    cidr_block = var.vpc_cidr_block
     instance_tenancy = "default"
     tags =  {
-        Name = "main"
+        Name = "my-vpc-${var.environment}"
     }
 }
 # Declare the data source
@@ -33,8 +33,10 @@ data "aws_availability_zones" "available" {
 resource "aws_subnet" "primary" {
   vpc_id     = aws_vpc.main.id
   availability_zone = data.aws_availability_zones.available.names[0]
-   cidr_block = "10.0.1.0/24" # Specify the CIDR block for the primary subnet
-
+  cidr_block = var.private_subnet_cidr_blocks # Specify the CIDR block for the primary subnet
+  tags = {
+    Name = "${var.environment}-private-subnet"
+  }
 
   # ...
 }
@@ -42,13 +44,15 @@ resource "aws_subnet" "primary" {
 resource "aws_subnet" "secondary" {
   vpc_id     = aws_vpc.main.id
   availability_zone = data.aws_availability_zones.available.names[1]
-   cidr_block = "10.0.2.0/24" # Specify the CIDR block for the primary subnet
-
+  cidr_block = var.public_subnet_cidr_blocks # Specify the CIDR block for the primary subnet
+  tags = {
+    Name = "${var.environment}-public-subnet"
+  }
 
   # ...
 }
 resource "aws_eks_cluster" "eks_cluster" {
-  name     = "eks_cluster"
+  name     = "cluster-${var.environment}"
   role_arn = aws_iam_role.example.arn
 
   vpc_config {
@@ -77,7 +81,7 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "example" {
-  name               = "eks-cluster-example"
+  name               = "eks-cluster-${var.environment}"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 

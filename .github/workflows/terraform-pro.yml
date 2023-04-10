@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - prod
+    # Only trigger the workflow when changes are merged into the main branch
+    # and not when a new commit is pushed to the main branch
+    # This can be achieved by adding the 'if' condition below
+    if: github.event_name == 'push' && github.event.pull_request.merged == true
 
 jobs:
   terraform:
@@ -27,4 +31,4 @@ jobs:
 
       - name: Terraform Apply
        # if: ${{ github.ref == 'refs/heads/prod' && github.event_name == 'push' }}
-        run: terraform apply -auto-approve
+        run: terraform apply -var-file=variables-pro.tfvars -auto-approve
