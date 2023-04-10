@@ -30,5 +30,5 @@ jobs:
         run: terraform plan
 
       - name: Terraform Apply
-       # if: ${{ github.ref == 'refs/heads/prod' && github.event_name == 'push' }}
-        run: terraform apply -var-file=variables-pro.tfvars -auto-approve
+        if: ${{ github.ref == 'refs/heads/prod' && github.event_name == 'push' }}
+        run: terraform apply -auto-approve
