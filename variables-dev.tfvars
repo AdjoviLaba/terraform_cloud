@@ -22,3 +22,7 @@ public_subnet_cidr_blocks = [
     "10.0.7.0/24",
     "10.0.8.0/24",
   ]
+
+private_subnet_count = 2
+
+public_subnet_count = 2
