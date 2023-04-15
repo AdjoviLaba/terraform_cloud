@@ -27,7 +27,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan
+        run: terraform plan -var-file=pro.auto.tfvars
 
       - name: Terraform Apply
         if: ${{ github.ref == 'refs/heads/prod' && github.event_name == 'push' }}
