@@ -19,7 +19,7 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Init
-        run: terraform init -backend-config=dev.remote.tfbackend
+        run: terraform init -backend-config=dev.remote.tfbackend 
 
 
       - name: Terraform Plan
@@ -28,4 +28,4 @@ jobs:
 
       - name: Terraform Apply
         if: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
-        run: terraform apply -auto-approve 
+        run: terraform apply -auto-approve -var-file="dev.auto.tfvars"
